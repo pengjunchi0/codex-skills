@@ -296,21 +296,6 @@ Captions: (a) overall framework, (b) submodules.
 - Visio 后台进程占用文件，导致保存失败。
 - 未备份原文件。
 
-## GitHub 使用建议
-
-当前版本是单 skill 仓库结构。仓库展示名称建议使用：
-
-```text
-Codex 科研论文绘图 Skill
-```
-
-内部 skill 目录名建议继续保留为：
-
-```text
-visio-image-rebuilder
-```
-
-原因是 Codex skill 的机器可读 `name` 字段应保持英文小写短横线格式，便于触发、安装和跨平台路径处理。
 
 当前目录结构：
 
