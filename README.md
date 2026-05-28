@@ -258,17 +258,6 @@ powershell -ExecutionPolicy Bypass -File scripts\visio_rebuild_scaffold.ps1 `
 7. 字体、线宽、配色统一。
 8. 导出预览和包结构检查。
 
-对于类似 AATN 的图，可以先写出面板清单：
-
-```text
-Top band: input sequence -> encoder blocks -> latent space -> reconstruction -> output sequence.
-Loss: constraint box with dashed connection to reconstruction.
-Bottom-left: MSC-Y module.
-Bottom-right: VGD module.
-Lower-left: AHPool module.
-Lower-right: TAP module.
-Captions: (a) overall framework, (b) submodules.
-```
 
 这个清单应作为绘图脚本的实现计划。
 
