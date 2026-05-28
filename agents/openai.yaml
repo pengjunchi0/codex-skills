@@ -1,0 +1,4 @@
+interface:
+  display_name: "Visio Image Rebuilder"
+  short_description: "Rebuild editable Visio diagrams from reference images."
+  default_prompt: "Use this skill to recreate or restyle a Visio .vsdx diagram from a reference image while preserving editable native shapes."

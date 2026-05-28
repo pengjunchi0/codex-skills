@@ -1,0 +1,145 @@
+param(
+    [Parameter(Mandatory=$true)]
+    [string]$VsdxPath,
+
+    [double]$PageW = 16.0,
+    [double]$PageH = 12.0,
+    [double]$RefW = 1448.0,
+    [double]$RefH = 1086.0,
+
+    [string]$PreviewPath
+)
+
+$ErrorActionPreference = 'Stop'
+
+function VX([double]$x) { $script:PageW * $x / $script:RefW }
+function VY([double]$y) { $script:PageH - ($script:PageH * $y / $script:RefH) }
+function RGBF([int]$r, [int]$g, [int]$b) { "RGB($r,$g,$b)" }
+
+$C = @{
+    Blue = RGBF 31 95 184
+    Purple = RGBF 122 88 166
+    Green = RGBF 90 132 64
+    Teal = RGBF 20 132 150
+    Orange = RGBF 231 116 26
+    Black = RGBF 17 17 17
+    Gray = RGBF 95 95 95
+    White = RGBF 255 255 255
+    BlueSoft = RGBF 243 248 255
+    PurpleSoft = RGBF 251 248 255
+    GreenSoft = RGBF 246 251 241
+    OrangeSoft = RGBF 255 248 239
+}
+
+function Set-Cell($shape, [string]$cell, [string]$formula) {
+    try { $shape.CellsU($cell).FormulaU = $formula } catch {}
+}
+
+function Style-Shape($shape, [string]$fill, [string]$line, [double]$linePt = 0.8, [int]$dash = 1, [double]$roundPx = 0) {
+    if ($fill -eq 'none') {
+        Set-Cell $shape 'FillPattern' '0'
+    } else {
+        Set-Cell $shape 'FillPattern' '1'
+        Set-Cell $shape 'FillForegnd' $fill
+    }
+    if ($line -eq 'none') {
+        Set-Cell $shape 'LinePattern' '0'
+    } else {
+        Set-Cell $shape 'LinePattern' ([string]$dash)
+        Set-Cell $shape 'LineColor' $line
+        Set-Cell $shape 'LineWeight' "$linePt pt"
+    }
+    if ($roundPx -gt 0) {
+        Set-Cell $shape 'Rounding' ((VX $roundPx).ToString([Globalization.CultureInfo]::InvariantCulture) + ' in')
+    }
+}
+
+function Set-Text($shape, [string]$text, [double]$size = 10, [string]$color = $C.Black, [bool]$bold = $false, [bool]$italic = $false, [int]$align = 1) {
+    $shape.Text = $text
+    Set-Cell $shape 'Char.Font' '0'
+    Set-Cell $shape 'Char.Size' "$size pt"
+    Set-Cell $shape 'Char.Color' $color
+    $style = 0
+    if ($bold) { $style += 1 }
+    if ($italic) { $style += 2 }
+    Set-Cell $shape 'Char.Style' ([string]$style)
+    Set-Cell $shape 'Para.HorzAlign' ([string]$align)
+    Set-Cell $shape 'VerticalAlign' '1'
+    foreach ($m in 'TxtMarginLeft','TxtMarginRight','TxtMarginTop','TxtMarginBottom') {
+        Set-Cell $shape $m '1 pt'
+    }
+}
+
+function RectTL([double]$x, [double]$y, [double]$w, [double]$h, [string]$text = '', [string]$fill = 'none', [string]$line = $C.Black, [double]$size = 10, [bool]$bold = $false, [double]$linePt = 0.8, [int]$dash = 1, [double]$roundPx = 6) {
+    $s = $script:Page.DrawRectangle((VX $x), (VY ($y + $h)), (VX ($x + $w)), (VY $y))
+    Style-Shape $s $fill $line $linePt $dash $roundPx
+    if ($text -ne '') { Set-Text $s $text $size $C.Black $bold }
+    return $s
+}
+
+function TextTL([double]$x, [double]$y, [double]$w, [double]$h, [string]$text, [double]$size = 10, [string]$color = $C.Black, [bool]$bold = $false, [bool]$italic = $false, [int]$align = 1) {
+    $s = RectTL $x $y $w $h '' 'none' 'none' $size $bold 0 1 0
+    Set-Text $s $text $size $color $bold $italic $align
+    return $s
+}
+
+function OvalTL([double]$x, [double]$y, [double]$w, [double]$h, [string]$text = '', [string]$fill = $C.White, [string]$line = $C.Black, [double]$size = 8, [bool]$bold = $false, [double]$linePt = 0.8) {
+    $s = $script:Page.DrawOval((VX $x), (VY ($y + $h)), (VX ($x + $w)), (VY $y))
+    Style-Shape $s $fill $line $linePt 1 0
+    if ($text -ne '') { Set-Text $s $text $size $C.Black $bold }
+    return $s
+}
+
+function LineTL([double]$x1, [double]$y1, [double]$x2, [double]$y2, [string]$color = $C.Black, [double]$linePt = 0.8, [bool]$arrowEnd = $false, [bool]$arrowBegin = $false, [int]$dash = 1) {
+    $s = $script:Page.DrawLine((VX $x1), (VY $y1), (VX $x2), (VY $y2))
+    Set-Cell $s 'LineColor' $color
+    Set-Cell $s 'LineWeight' "$linePt pt"
+    Set-Cell $s 'LinePattern' ([string]$dash)
+    if ($arrowEnd) { Set-Cell $s 'EndArrow' '4' }
+    if ($arrowBegin) { Set-Cell $s 'BeginArrow' '4' }
+    return $s
+}
+
+function DotTL([double]$cx, [double]$cy, [double]$r, [string]$fill, [string]$line = $C.White) {
+    return OvalTL ($cx - $r) ($cy - $r) (2 * $r) (2 * $r) '' $fill $line 6 $false 0.4
+}
+
+function Draw-ReferenceFigure {
+    # Replace this with the task-specific drawing code.
+    # Keep the order: panels -> main flow -> text boxes -> repeated motifs -> annotations.
+    RectTL 20 60 180 220 'Input Sequence' $C.BlueSoft $C.Blue 11 $true 1.0 1 8 | Out-Null
+    RectTL 260 60 220 220 'Block 1' $C.White $C.Blue 10 $true 1.0 1 8 | Out-Null
+    RectTL 290 115 160 35 'MSC-Y' $C.PurpleSoft $C.Purple 11 $true 0.8 1 5 | Out-Null
+    LineTL 200 170 260 170 $C.Black 1.0 $true | Out-Null
+    TextTL 600 20 360 28 'Spatial Encoder (repeated for W steps)' 13 $C.Blue $true | Out-Null
+}
+
+$backup = Join-Path (Split-Path -Parent $VsdxPath) (([IO.Path]::GetFileNameWithoutExtension($VsdxPath)) + ".backup-" + (Get-Date -Format 'yyyyMMdd-HHmmss') + ".vsdx")
+Copy-Item -LiteralPath $VsdxPath -Destination $backup
+Write-Output "Backup: $backup"
+
+$visio = New-Object -ComObject Visio.Application
+$visio.Visible = $true
+$doc = $visio.Documents.Open($VsdxPath)
+$script:Page = $doc.Pages.Item(1)
+$script:PageW = $PageW
+$script:PageH = $PageH
+$script:RefW = $RefW
+$script:RefH = $RefH
+
+$script:Page.PageSheet.CellsU('PageWidth').FormulaU = "$PageW in"
+$script:Page.PageSheet.CellsU('PageHeight').FormulaU = "$PageH in"
+while ($script:Page.Shapes.Count -gt 0) {
+    $script:Page.Shapes.Item(1).Delete()
+}
+
+Draw-ReferenceFigure
+
+$doc.Save()
+if ($PreviewPath) {
+    $script:Page.Export($PreviewPath)
+    Write-Output "Preview: $PreviewPath"
+}
+$doc.Close()
+$visio.Quit()
+Write-Output "Saved: $VsdxPath"
