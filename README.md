@@ -4,62 +4,6 @@
 
 `Codex 科研论文绘图 Skill` 是一个面向科研论文配图工作流的 Codex Skill。它用于把参考图片、截图或生成图还原为 **Microsoft Visio `.vsdx` 原生可编辑图形**。核心目标不是把图片贴进 Visio，而是让 Codex 通过 Visio 原生形状、文本、连线、分组和样式重建论文配图、模型框架图、流程图和多面板科学图。
 
-## Search Keywords
-
-中文关键词：
-
-```text
-Codex 科研论文绘图 Skill
-Codex 绘图 skill
-科研论文绘图
-论文配图
-SCI 论文配图
-Nature 论文配图
-图片转 Visio
-生成图转 Visio
-AI 生成图转 Visio
-论文模型图转 Visio
-Visio 可编辑图
-VSDX 可编辑图
-可编辑科研图
-可编辑论文图
-```
-
-English keywords:
-
-```text
-Codex Skill
-Visio Skill
-image to Visio
-image to VSDX
-AI figure to Visio
-editable Visio diagram
-editable VSDX diagram
-research figure
-scientific figure
-paper figure
-academic figure
-scientific figure reconstruction
-research figure editing
-Microsoft Visio automation
-```
-
-Recommended GitHub repository topics:
-
-```text
-codex
-codex-skill
-visio
-vsdx
-image-to-visio
-ai-to-visio
-editable-diagrams
-scientific-figures
-research-figures
-paper-figures
-academic-figures
-microsoft-visio
-```
 
 ## 适用场景
 
@@ -147,7 +91,7 @@ scripts/*.ps1
 
 - Windows。
 - Microsoft Visio。
-- PowerShell 5+。
+- PowerShell。
 - Git。
 - Codex Desktop 或支持本地文件与工具调用的 Codex 环境。
 
