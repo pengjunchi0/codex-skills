@@ -296,16 +296,6 @@ scripts/
 README.md
 ```
 
-如果未来要在同一仓库中维护多个 skill，建议调整成：
-
-```text
-skills/
-  visio-image-rebuilder/
-    SKILL.md
-    agents/
-    references/
-    scripts/
-```
 
 ## 状态
 
