@@ -4,6 +4,63 @@
 
 内部 skill 标识仍为 `visio-image-rebuilder`。这是为了符合 Codex skill 命名规范；对外展示名称使用 `Codex 科研论文绘图 Skill`。
 
+## Search Keywords
+
+中文关键词：
+
+```text
+Codex 科研论文绘图 Skill
+Codex 绘图 skill
+科研论文绘图
+论文配图
+SCI 论文配图
+Nature 论文配图
+图片转 Visio
+生成图转 Visio
+AI 生成图转 Visio
+论文模型图转 Visio
+Visio 可编辑图
+VSDX 可编辑图
+可编辑科研图
+可编辑论文图
+```
+
+English keywords:
+
+```text
+Codex Skill
+Visio Skill
+image to Visio
+image to VSDX
+AI figure to Visio
+editable Visio diagram
+editable VSDX diagram
+research figure
+scientific figure
+paper figure
+academic figure
+scientific figure reconstruction
+research figure editing
+Microsoft Visio automation
+```
+
+Recommended GitHub repository topics:
+
+```text
+codex
+codex-skill
+visio
+vsdx
+image-to-visio
+ai-to-visio
+editable-diagrams
+scientific-figures
+research-figures
+paper-figures
+academic-figures
+microsoft-visio
+```
+
 ## 适用场景
 
 适合：
