@@ -1,5 +1,7 @@
 # Codex 科研论文绘图 Skill
 
+当前版本：`v1.0`
+
 `Codex 科研论文绘图 Skill` 是一个面向科研论文配图工作流的 Codex Skill。它用于把参考图片、截图或生成图还原为 **Microsoft Visio `.vsdx` 原生可编辑图形**。核心目标不是把图片贴进 Visio，而是让 Codex 通过 Visio 原生形状、文本、连线、分组和样式重建论文配图、模型框架图、流程图和多面板科学图。
 
 内部 skill 标识仍为 `visio-image-rebuilder`。这是为了符合 Codex skill 命名规范；对外展示名称使用 `Codex 科研论文绘图 Skill`。
@@ -407,3 +409,77 @@ skills/
 - 自动生成面板坐标草图。
 - 提供更多 motif helper，例如 cube、heatmap、graph、stacked sequence。
 - 加入示例 `.vsdx` 和参考图测试用例。
+
+## Version History
+
+### v1.0 - Initial usable version
+
+当前 v1 已完成：
+
+- 建立 Codex Skill 基础结构：
+  - `SKILL.md`
+  - `agents/openai.yaml`
+  - `references/rebuild-guidelines.md`
+  - `scripts/visio_page_tools.ps1`
+  - `scripts/visio_rebuild_scaffold.ps1`
+- 明确核心规则：最终 `.vsdx` 应由 Visio 原生可编辑形状构成，不能用整张参考图嵌入冒充还原。
+- 支持以参考图片为目标，对科研论文图进行结构化拆解。
+- 支持复杂多面板论文图的绘图流程设计：
+  - 总体框架区。
+  - 子模块面板区。
+  - 箭头、虚线反馈、约束连接。
+  - 图节点、热图、堆叠序列、立方体等 motif 的原生近似绘制思路。
+- 提供 Visio COM 绘图脚手架：
+  - 页面尺寸设置。
+  - 坐标转换。
+  - 矩形、文本、圆形、线条、箭头、点的基础绘制函数。
+  - 预览导出接口。
+- 提供 `.vsdx` 检查工具：
+  - 备份。
+  - 导出预览。
+  - 检查 shape 数量。
+  - 检查 `visio/media` 中是否存在大尺寸整图图片。
+- 提供科研图默认风格建议：
+  - Times New Roman 字体。
+  - 低饱和模块配色。
+  - 主边框和内部边框线宽建议。
+  - 模块语义配色。
+- README 已加入中英文搜索关键词，便于 GitHub 和搜索引擎检索。
+
+v1 的能力边界：
+
+- v1 不是自动图像识别系统。它不会自动从图片中精准检测所有元素坐标。
+- v1 主要提供 Codex 执行还原任务时的流程、约束、脚手架和验证工具。
+- 完整一比一重建仍需要 Codex 根据参考图编写或调整绘图脚本。
+- 完整 Visio 自动化依赖 Windows + Microsoft Visio。
+- 对极小文字、复杂公式和高密度纹理，v1 推荐使用可编辑近似表达，并在交付时说明无法精确识别的部分。
+
+### Planned v1.1
+
+计划增强：
+
+- 增加更多可复用 motif helper：
+  - `DrawCube`
+  - `DrawHeatmap`
+  - `DrawGraph`
+  - `DrawStackedSequence`
+  - `DrawMiniChart`
+- 增加参考图尺寸读取脚本。
+- 增加 shape inventory 导出脚本，用于分析已有 `.vsdx` 的文本、颜色、位置和分组。
+- 增加一个最小示例任务，展示从参考图到 `.vsdx` 的完整脚本结构。
+
+### Planned v2.0
+
+长期目标：
+
+- 半自动参考图结构解析：
+  - 面板检测。
+  - 主色提取。
+  - 文本区域估计。
+  - 箭头和连接线候选检测。
+- 生成初始 Visio 草图后，由 Codex 迭代修正。
+- 支持更多输出格式：
+  - SVG
+  - PPTX
+  - PDF
+- 建立测试集，用多张科研图验证还原质量和可编辑性。
