@@ -1,6 +1,6 @@
 # Codex 科研论文绘图 Skill
 
-`Codex 科研论文绘图 Skill` 是一个面向科研论文配图工作流的 Codex Skill。它用于把参考图片、截图或生成图还原为 `.vsdx` 原生可编辑图形**。核心目标不是把图片贴进 Visio，而是让 Codex 通过 Visio 原生形状、文本、连线、分组和样式重建论文配图、模型框架图、流程图和多面板科学图。
+`Codex 科研论文绘图 Skill` 是一个面向科研论文配图工作流的 Codex Skill。它用于把参考图片、截图或生成图还原为 **Microsoft Visio `.vsdx` 原生可编辑图形**。核心目标不是把图片贴进 Visio，而是让 Codex 通过 Visio 原生形状、文本、连线、分组和样式重建论文配图、模型框架图、流程图和多面板科学图。
 
 内部 skill 标识仍为 `visio-image-rebuilder`。这是为了符合 Codex skill 命名规范；对外展示名称使用 `Codex 科研论文绘图 Skill`。
 
