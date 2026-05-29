@@ -109,9 +109,9 @@ function Draw-ReferenceFigure {
     # Keep the order: panels -> main flow -> text boxes -> repeated motifs -> annotations.
     RectTL 20 60 180 220 'Input Sequence' $C.BlueSoft $C.Blue 11 $true 1.0 1 8 | Out-Null
     RectTL 260 60 220 220 'Block 1' $C.White $C.Blue 10 $true 1.0 1 8 | Out-Null
-    RectTL 290 115 160 35 'MSC-Y' $C.PurpleSoft $C.Purple 11 $true 0.8 1 5 | Out-Null
+    RectTL 290 115 160 35 'Module A' $C.PurpleSoft $C.Purple 11 $true 0.8 1 5 | Out-Null
     LineTL 200 170 260 170 $C.Black 1.0 $true | Out-Null
-    TextTL 600 20 360 28 'Spatial Encoder (repeated for W steps)' 13 $C.Blue $true | Out-Null
+    TextTL 600 20 360 28 'Repeated Processing Stage' 13 $C.Blue $true | Out-Null
 }
 
 $backup = Join-Path (Split-Path -Parent $VsdxPath) (([IO.Path]::GetFileNameWithoutExtension($VsdxPath)) + ".backup-" + (Get-Date -Format 'yyyyMMdd-HHmmss') + ".vsdx")

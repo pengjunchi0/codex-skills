@@ -65,7 +65,7 @@
 Windows 示例：
 
 ```powershell
-git clone https://github.com/pengjunchi0/codex-skills.git "$env:USERPROFILE\.codex\skills\visio-image-rebuilder"
+git clone https://github.com/pengjunchi0/codex-visio-paper-figure-skill.git "$env:USERPROFILE\.codex\skills\visio-image-rebuilder"
 ```
 
 或手动复制整个目录到：
@@ -258,6 +258,18 @@ powershell -ExecutionPolicy Bypass -File scripts\visio_rebuild_scaffold.ps1 `
 7. 字体、线宽、配色统一。
 8. 导出预览和包结构检查。
 
+对于复杂多面板图，可以先写出与当前参考图对应的面板清单：
+
+```text
+Canvas: wide landscape, two main visual bands.
+Top band: input/data source -> repeated processing blocks -> central module -> output/result.
+Auxiliary path: constraint/loss/feedback box connected by dashed arrow.
+Panel A: first submodule, accent color, main internal operators.
+Panel B: second submodule, accent color, graph/table/chart elements.
+Panel C: third submodule, accent color, aggregation or attention elements.
+Panel D: fourth submodule, accent color, normalization or output elements.
+Captions: panel captions and global figure caption.
+```
 
 这个清单应作为绘图脚本的实现计划。
 

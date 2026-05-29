@@ -1,32 +1,53 @@
 # Rebuild Guidelines
 
+Use this reference when reconstructing a scientific, technical, or academic diagram from a PNG/JPG/screenshot into editable Microsoft Visio `.vsdx` content.
+
+The goal is visual and semantic equivalence using native Visio shapes, text, connectors, groups, and styles. Do not treat any example below as a fixed domain template.
+
 ## Reference Analysis
 
 Capture these properties before drawing:
 
-- Canvas aspect ratio and page margins.
-- Major panels and their accent colors.
-- Text hierarchy: title, module title, block labels, equations, captions.
-- Connector semantics: solid arrows, dashed feedback, braces, ellipses, summation nodes.
-- Repeated motifs: stacked frames, neural blocks, graph nodes, cubes, heatmaps, small charts.
-- Typography: use Times New Roman for academic figures unless the user specifies another venue style.
+- Canvas aspect ratio, page margins, and whitespace distribution.
+- Major regions: bands, panels, columns, rows, insets, legends, captions.
+- Reading order: left-to-right, top-to-bottom, radial, cyclic, or feedback loop.
+- Text hierarchy: figure title, panel title, module label, axis label, equation, caption, note.
+- Connector semantics: solid arrows, dashed arrows, inhibition lines, braces, loops, feedback paths, summation nodes.
+- Repeated motifs: stacked frames, process blocks, neural-network layers, tables, graphs, charts, heatmaps, timelines, molecule-like nodes, icons.
+- Style tokens: font family, font size bands, accent colors, fill opacity, line weights, corner radii, dash patterns.
+- Editability risks: tiny text, dense textures, screenshots embedded inside shapes, equations, image-like scientific data.
 
 ## Panel Inventory Template
 
-For a complex model figure like the AATN reference image, write a short inventory before coding:
+For a complex figure, write a short inventory before coding. Keep it specific to the user's reference image, not to any previous project.
 
 ```text
-Canvas: wide landscape, two bands separated by dashed blue horizontal rule.
-Top band: input stack -> repeated encoder blocks -> latent space -> reconstruction -> output stack; loss box feeds reconstruction by dashed arrow.
-Bottom band: 2x2 module grid.
-Panel 1 MSC-Y: purple accent, three convolution branches, GN/ReLU, TAP, Y-gate, Film, small feature stack.
-Panel 2 VGD: green accent, y-slices, graph construction, edge weights, graph diffusion, TAP feedback, Msg/Output.
-Panel 3 AHPool: cyan/blue accent, input cube, feature transform, attention map, pooling strip, TAP weight.
-Panel 4 TAP: orange accent, vertical thickness scale, small charts, W/Yfeat tables, Y-gate, heatmap.
-Captions: (a) overall framework, (b) submodule structure.
+Canvas: landscape or portrait; approximate aspect ratio; main whitespace pattern.
+Global structure: top band / bottom band / left workflow / right modules / multi-panel grid.
+Panel A: title, accent color, role, main internal objects, incoming/outgoing arrows.
+Panel B: title, accent color, role, main internal objects, incoming/outgoing arrows.
+Panel C: title, accent color, role, main internal objects, incoming/outgoing arrows.
+Shared elements: legends, captions, separators, equations, repeated labels.
+Critical text: labels that must be preserved exactly.
+Approximation targets: dense details that can be represented by native simplified motifs.
 ```
 
 This inventory is the contract for the drawing script. If an item is not in the inventory, it is likely to be omitted or drawn inconsistently.
+
+## Common Figure Archetypes
+
+Choose the closest archetype before drawing:
+
+- **Pipeline or workflow**: ordered process boxes, arrows, inputs, outputs, optional feedback.
+- **Model architecture**: repeated blocks, encoders/decoders, latent variables, modules, loss paths.
+- **Algorithm schematic**: data structures, operations, equations, constraints, branching logic.
+- **Multi-panel methods figure**: several modules with different colors and local legends.
+- **Graph or network figure**: nodes, edges, weights, message passing, clusters, highlighted paths.
+- **Matrix or heatmap figure**: grids, color scales, row/column labels, aggregation arrows.
+- **Chart-heavy figure**: mini plots, axes, trends, bars, curves, distributions, annotations.
+- **System diagram**: components, interfaces, data stores, users, protocols, deployment zones.
+
+The archetype only guides layout and helper functions. The actual labels, colors, and structure must come from the user's reference image.
 
 ## Coordinate Strategy
 
@@ -45,26 +66,28 @@ Draw from top-left bounds as `RectTL(x, y, w, h)` so the script remains readable
 
 ## Visual Matching Heuristics
 
-- Match structure before decoration. Panel placement and flow arrows matter more than texture detail.
-- Use simplified native motifs for dense image-like content: stacked rounded rectangles, small dots, mini heatmaps, line charts, and graph nodes.
-- Preserve scientific labels exactly when legible. If text is unreadable, use a close placeholder and mention it.
-- Use muted panel backgrounds and colored outlines instead of heavy fills.
-- Keep equations editable as text when practical. Use plain approximations if Visio equation objects are unavailable.
-- Use color as semantic grouping, not decoration. Reuse one accent per module and keep internal operator boxes low-saturation.
-- Prefer native approximations over screenshots for cubes, graphs, and heatmaps. The goal is editability plus visual equivalence, not pixel-perfect raster tracing.
+- Match structure before decoration. Panel placement, reading order, and flow arrows matter more than texture detail.
+- Preserve semantic grouping. Containers, modules, legends, charts, and subgraphs should be separate editable groups.
+- Preserve scientific labels exactly when legible. If text is unreadable, use a close placeholder and report the limitation.
+- Use simplified native motifs for dense image-like content: stacked rounded rectangles, small dots, mini heatmaps, line charts, bar charts, tables, and graph nodes.
+- Keep equations editable as text when practical. Use plain text approximations if Visio equation objects are unavailable.
+- Use color as semantic grouping, not decoration. Reuse one accent per panel or module unless the reference clearly uses another scheme.
+- Prefer native approximations over screenshots for cubes, graphs, heatmaps, icons, and small charts. The target is editability plus visual equivalence.
 - If the reference contains many tiny repeated elements, create 2-3 reusable helper functions rather than hand placing each occurrence.
+- Do not force a previous project's palette, module names, or layout onto a new reference.
 
 ## Scientific Figure Style Tokens
 
 Use these defaults unless the reference clearly differs:
 
-- Font: Times New Roman.
+- Font: Times New Roman for manuscript-style figures; Arial or Helvetica for clean technical UI-style diagrams.
 - Main border: 0.9-1.2 pt.
 - Internal border: 0.5-0.8 pt.
 - Rounded rectangle radius: small, usually 4-8 px equivalent.
-- Arrowheads: consistent filled end arrows for forward flow; dashed lines for feedback/loss constraints.
+- Arrowheads: consistent filled end arrows for forward flow; dashed lines for feedback, optional paths, or constraints.
 - Backgrounds: white or very pale panel tints.
-- Captions: black, bold, centered; keep below the figure bands.
+- Captions: black, bold, centered; keep below the relevant panel or figure band.
+- Accent colors: muted blue, green, orange, purple, cyan, or gray families; avoid over-saturated fills unless present in the reference.
 
 ## Reconstruction Order
 
@@ -72,7 +95,7 @@ Use these defaults unless the reference clearly differs:
 2. Major bands, panel boxes, captions, and separators.
 3. Main dataflow arrows and module containers.
 4. Text-bearing process boxes.
-5. Repeated motifs: stacks, cubes, graphs, heatmaps, mini charts.
+5. Repeated motifs: stacks, cubes, graphs, heatmaps, mini charts, tables, icons.
 6. Equations, legends, axis labels, small annotations.
 7. Grouping, font normalization, preview export, package inspection.
 
@@ -81,12 +104,13 @@ Do not optimize small graphics before the panel grid and arrows are correct.
 ## Avoid These Failure Modes
 
 - Inserting the whole reference image as the final page.
+- Copying examples from this skill instead of analyzing the user's actual reference.
 - Using a single ungrouped mass of hundreds of shapes with no structure.
 - Recoloring by global color replacement when modules share colors with different meanings.
 - Leaving Visio locked in the background after a timeout.
 - Claiming success after a script times out without checking file timestamp or package contents.
 - Letting text overflow boxes after changing fonts.
-- Losing semantic editability by converting equations, graph nodes, or tables into a pasted crop.
+- Losing semantic editability by converting equations, graph nodes, tables, or charts into pasted crops.
 - Making all modules the same palette when the reference uses color to distinguish submodules.
 
 ## Verification Rubric
@@ -94,10 +118,10 @@ Do not optimize small graphics before the panel grid and arrows are correct.
 Score the result before delivery:
 
 - Structure: panel locations and flow match the reference.
-- Semantics: every named module and caption exists as editable text.
+- Semantics: every named module, caption, and important label exists as editable text.
 - Style: colors, line weights, typography, and spacing are consistent.
 - Editability: no full-page image; major objects are native shapes.
-- Robustness: target file has a backup; preview/package checks are recorded.
+- Robustness: target file has a backup; preview or package checks are recorded.
 
 If any category is weak, either fix it or state the limitation explicitly.
 
